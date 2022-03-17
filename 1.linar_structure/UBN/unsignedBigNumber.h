@@ -44,6 +44,10 @@ unsignedBigNumber intToUBN(int n);
 //无符号大数转int
 int UBNToInt(unsignedBigNumber *ubn);
 //把ubn2赋值给空无符号大数ubn1
-void assign(unsignedBigNumber *ubn1,unsignedBigNumber *ubn2);\
+void assign(unsignedBigNumber *ubn1,unsignedBigNumber *ubn2);
 void shiftLeft(unsignedBigNumber *ubn,int i);
+//
+void split(unsignedBigNumber* src,unsignedBigNumber* dst1,unsignedBigNumber* dst2);
+//
+unsignedBigNumber KaratsubamulUBN(unsignedBigNumber *u1,unsignedBigNumber *u2);
 #endif //UNSIGNEDBIGNUMBER_INCLUDED
