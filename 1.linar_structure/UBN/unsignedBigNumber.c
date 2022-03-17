@@ -314,3 +314,7 @@ int main(){
     printUBN(&ubn);
     return 0;
 }
+//kara乘法的实现
+//split函数
+//大数除法
+//取模
