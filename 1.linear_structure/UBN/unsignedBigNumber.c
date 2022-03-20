@@ -20,11 +20,13 @@ void printUBN(unsignedBigNumber* ubn){
     printf("\n");
 }
 void assign(unsignedBigNumber *ubn1,unsignedBigNumber *ubn2){
+    initUBN(ubn1);
     node* p2 = ubn2->phead->next;
     while(p2!= NULL){
         appendDigit(ubn1,p2->digit);
         p2 = p2->next;
     }
+    ubn1->digitCount = ubn2->digitCount;
 }
 void initUBN(unsignedBigNumber* ubn){
     node* p = newNode();
@@ -218,54 +220,60 @@ unsignedBigNumber mulUBN(unsignedBigNumber *u1,unsignedBigNumber *u2){
     formatUBN(&ubn);
     return ubn;
 }
+//除法
+unsignedBigNumber divUBN(unsignedBigNumber *u1,unsignedBigNumber *u2){
+    unsignedBigNumber ubn=intToUBN(0);
+    unsignedBigNumber temp;
+    initUBN(&temp);
+    assign(&temp,u1);
+    int digit;
+    int remainer = 0;
+    while(cmpUBN(&temp,u2)>=0){
+        digit = 0;
+        while(cmpUBN(&temp,u2)>=0){
+            temp = subUBN(&temp,u2);
+            digit++;
+        }
+        appendFrontDigit(&ubn,digit);
+    }
+    shiftLeft(&ubn,-1);
+    formatUBN(&ubn);
+    return ubn;
+}
+//取模
+unsignedBigNumber modUBN(unsignedBigNumber *u1,unsignedBigNumber *u2){
+    unsignedBigNumber temp=divUBN(u1,u2);
+    unsignedBigNumber ubn=mulUBN(&temp,u2);
+    ubn=subUBN(u1,&ubn);
+    return ubn;
+}
 void shiftLeft(unsignedBigNumber *ubn,int i){
-    for(;i>0;i--){
-        appendDigit(ubn,0);
+    if(i<0){
+        ubn->digitCount+=i;
+        if(ubn->digitCount>0){
+            node *p=ubn->ptail;
+            for(;i<0;i++){
+                node *temp=p;
+                p=p->prev;
+                free(temp);
+            }
+            ubn->ptail=p;
+            p->next=NULL;
+        }
+        else{
+            dropUBN(ubn);
+            initUBN(ubn);
+        }
+    }
+    else if(i>0){
+        for(;i>0;i--){
+            appendDigit(ubn,0);
+        }
     }
     formatUBN(ubn);
+    return;
 }
-unsignedBigNumber divUBN(unsignedBigNumber *u1,unsignedBigNumber *u2){
-    unsignedBigNumber ubn;
-    initUBN(&ubn);
-    node* p1 = u1->ptail;
-    node* p2 = u2->ptail;
-    int remainer = 0;
-    while(p1!=u1->phead){
-        int digit = p1->digit + remainer*10;
-        remainer = digit/p2->digit;
-        digit = digit%p2->digit;
-        appendFrontDigit(&ubn,digit);
-        p1 = p1->prev;
-    }
-    
-    formatUBN(&ubn);
-    return ubn;
-}
-unsignedBigNumber modUBN(unsignedBigNumber *u1,unsignedBigNumber *u2){
-    unsignedBigNumber ubn;
-    initUBN(&ubn);
-    node* p1 = u1->ptail;
-    node* p2 = u2->ptail;
-    int remainer = 0;
-    while(p1!=u1->phead){
-        int digit = p1->digit;
-        while(p2!=u2->phead){
-            digit += remainer*10;
-            if(digit >= p2->digit){
-                digit -= p2->digit;
-                remainer = 1;
-            }else{
-                remainer = 0;
-            }
-            p2 = p2->prev;
-        }
-        p2 = u2->ptail;
-        appendFrontDigit(&ubn,digit);
-        p1 = p1->prev;
-    }
-    formatUBN(&ubn);
-    return ubn;
-}
+//比较
 int cmpUBN(unsignedBigNumber *u1,unsignedBigNumber *u2){
     if(u1->digitCount > u2->digitCount){
         return 1;
@@ -320,7 +328,6 @@ unsignedBigNumber KaratsubamulUBN(unsignedBigNumber *u1,unsignedBigNumber *u2){
     h/=2;
     unsignedBigNumber A,B,C,D,APlusB,CPlusD,Z2,Z1,Z0,Z2PlusZ0,Z,result;
     initUBN(&result);
-    //考虑大数位与小数位相乘的情况？？
     split(u1,h,&A,&B);
     split(u2,h,&C,&D);
     APlusB=addUBN(&A,&B);
@@ -359,15 +366,12 @@ void split(unsignedBigNumber *src,int digitCount,unsignedBigNumber *dst1,unsigne
             appendFrontDigit(dst1,p->digit);
         }
     }
-    //位数为零？？？
     formatUBN(dst2);
     formatUBN(dst1);
 }
-//大数除法
-//取模
 int main(){
-    unsignedBigNumber u1=inputUBN(),u2=inputUBN(),u3;
-    u3=KaratsubamulUBN(&u1,&u2);
+    unsignedBigNumber u1=inputUBN(),u2=inputUBN();
+    unsignedBigNumber u3=modUBN(&u1,&u2);
     printUBN(&u3);
     return 0;
 }
