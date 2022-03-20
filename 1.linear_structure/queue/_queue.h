@@ -1,5 +1,6 @@
 #ifndef _QUEUE_INCLUDED_
 #define _QUEUE_INCLUDED_
+//TODO提供泛型支持
 typedef int ElemType;
 typedef struct{
     ElemType *bottom;

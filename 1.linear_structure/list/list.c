@@ -1,5 +1,6 @@
 #include<stdlib.h>
 #include<stdio.h>
+//TODO 提供泛型支持
 typedef int datatype;
 typedef struct node{
     datatype data;

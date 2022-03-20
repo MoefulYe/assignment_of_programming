@@ -9,6 +9,8 @@ typedef struct{
     int top;
     int cap;
 } _stack;
+void init(problem *pb,int num,char x,char y,char z);
+void Hanoi(problem pb);
 //创建一个容量为cap的栈
 _stack create(int cap);
 //查看栈的状态

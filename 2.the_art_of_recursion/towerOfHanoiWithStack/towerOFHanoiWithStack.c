@@ -1,16 +1,10 @@
 #include "./stack/_stack.h"
-#define MAX_CAP 50
-void Hanoi(problem pb){
-    _stack stack=create(MAX_CAP);
-    push(&stack,pb);
-    while(status(&stack)){
-        problem temp=pop(&stack);
-        if(temp.n==1);
-        else{
-            
-        }
-    }
-}
+#include<stdio.h>
 int main(){
-    
+    int num;
+    problem pb;
+    scanf("%d",&num);
+    init(&pb,num,'A','B','C');
+    Hanoi(pb);
+    return 0;
 }

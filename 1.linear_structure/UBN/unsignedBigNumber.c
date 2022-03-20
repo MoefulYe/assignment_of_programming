@@ -308,13 +308,66 @@ int UBNToInt(unsignedBigNumber *ubn){
     }
     return n;
 }
-int main(){
-    unsignedBigNumber u1=inputUBN(),u2=inputUBN();
-    unsignedBigNumber ubn=divUBN(&u1,&u2);
-    printUBN(&ubn);
-    return 0;
-}
 //kara乘法的实现
+unsignedBigNumber KaratsubamulUBN(unsignedBigNumber *u1,unsignedBigNumber *u2){
+    if(u1->digitCount==1){
+        return scaleUBN(u2,u1->phead->next->digit);
+    }
+    else if(u2->digitCount==1){
+        return scaleUBN(u1,u2->phead->next->digit);
+    }
+    int h=u1->digitCount>u2->digitCount?u1->digitCount:u2->digitCount;
+    h/=2;
+    unsignedBigNumber A,B,C,D,APlusB,CPlusD,Z2,Z1,Z0,Z2PlusZ0,Z,result;
+    initUBN(&result);
+    //考虑大数位与小数位相乘的情况？？
+    split(u1,h,&A,&B);
+    split(u2,h,&C,&D);
+    APlusB=addUBN(&A,&B);
+    CPlusD=addUBN(&C,&D);
+    Z2=KaratsubamulUBN(&A,&C);
+    Z=KaratsubamulUBN(&APlusB,&CPlusD);
+    Z0=KaratsubamulUBN(&B,&D);
+    Z2PlusZ0=addUBN(&Z2,&Z0);
+    Z1=subUBN(&Z,&Z2PlusZ0);
+    shiftLeft(&Z2,h*2);
+    shiftLeft(&Z1,h);
+    result=addUBN(&Z0,&Z1);
+    result=addUBN(&result,&Z2);
+    dropUBN(&A);
+    dropUBN(&B);
+    dropUBN(&C);
+    dropUBN(&D);
+    dropUBN(&APlusB);
+    dropUBN(&CPlusD);
+    dropUBN(&Z);
+    dropUBN(&Z0);
+    dropUBN(&Z1);
+    dropUBN(&Z2);
+    dropUBN(&Z2PlusZ0);
+    return result;
+}
 //split函数
+void split(unsignedBigNumber *src,int digitCount,unsignedBigNumber *dst1,unsignedBigNumber *dst2){
+    initUBN(dst1);
+    initUBN(dst2);
+    node *p=src->ptail;
+    for(int i=0;p!=src->phead;i++,p=p->prev){
+        if(i<digitCount){
+            appendFrontDigit(dst2,p->digit);
+        }else{
+            appendFrontDigit(dst1,p->digit);
+        }
+    }
+    //位数为零？？？
+    formatUBN(dst2);
+    formatUBN(dst1);
+}
 //大数除法
 //取模
+int main(){
+    unsignedBigNumber u1=inputUBN(),u2=inputUBN(),u3;
+    u3=KaratsubamulUBN(&u1,&u2);
+    printUBN(&u3);
+    return 0;
+}

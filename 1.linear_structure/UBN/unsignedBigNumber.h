@@ -47,7 +47,7 @@ int UBNToInt(unsignedBigNumber *ubn);
 void assign(unsignedBigNumber *ubn1,unsignedBigNumber *ubn2);
 void shiftLeft(unsignedBigNumber *ubn,int i);
 //
-void split(unsignedBigNumber* src,unsignedBigNumber* dst1,unsignedBigNumber* dst2);
+void split(unsignedBigNumber* src,int digitCount,unsignedBigNumber* dst1,unsignedBigNumber* dst2);
 //
 unsignedBigNumber KaratsubamulUBN(unsignedBigNumber *u1,unsignedBigNumber *u2);
 #endif //UNSIGNEDBIGNUMBER_INCLUDED

@@ -1,5 +1,6 @@
 #ifndef _STACK_INCLUDED_
 #define _STACK_INCLUDED_
+//TODO 提供泛型支持
 typedef int ElemType;
 typedef struct{
     ElemType *bottom;

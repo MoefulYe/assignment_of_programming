@@ -1,6 +1,33 @@
 #include "./_stack.h"
 #include<stdio.h>
 #include<stdlib.h>
+#define MAX_CAP 100
+void Hanoi(problem pb){
+    _stack stack=create(MAX_CAP);
+    push(&stack,pb);
+    while(status(&stack)){
+        problem temp=pop(&stack);
+        if(temp.n==1){
+            printf("move %c -> %c\n",temp.A,temp.C);
+        }
+        else{
+            problem sub1,sub2,sub3;
+            init(&sub1,pb.n-1,pb.A,pb.C,pb.B);
+            init(&sub2,1,pb.A,pb.B,pb.C);
+            init(&sub3,pb.n-1,pb.B,pb.A,pb.C);
+            pushWithResize(&stack,sub3);
+            pushWithResize(&stack,sub2);
+            pushWithResize(&stack,sub1);
+        }
+    }
+    clear(&stack);
+}
+void init(problem *pb,int num,char x,char y,char z){
+    pb->n=num;
+    pb->A=x;
+    pb->B=y;
+    pb->C=z;
+}
 _stack create(int cap){
     _stack stack;
     stack.cap=cap;
