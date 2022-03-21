@@ -31,7 +31,7 @@ void formatSBN(signedBigNumber* sbn);
 //取绝对值
 signedBigNumber absSBN(signedBigNumber *sbn);
 //取相反数
-signedBigNumber getOpposite(signedBigNumber *sbn);
+signedBigNumber getOppositeSBN(signedBigNumber *sbn);
 //有符号大数倍乘一个整形
 signedBigNumber scaleSBN(signedBigNumber *sbn,int scale);
 //两个有符号大数相加
