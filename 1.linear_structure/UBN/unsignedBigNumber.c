@@ -91,6 +91,15 @@ void formatUBN(unsignedBigNumber* ubn){
         free(p);
         ubn->digitCount--;
     }
+    int remainer=0;
+    for(node *p=ubn->ptail;p!=ubn->phead;p=p->prev){
+        p->digit+=remainer;
+        remainer=p->digit/10;
+        p->digit%=10;
+    }
+    if(remainer>0){
+        appendFrontDigit(ubn,remainer);
+    }
 }
 unsignedBigNumber scaleUBN(unsignedBigNumber *ubn,int scale){
     if(scale == 0){
@@ -157,6 +166,7 @@ unsignedBigNumber addUBN(unsignedBigNumber *u1,unsignedBigNumber *u2){
     if(remainer != 0){
         appendFrontDigit(&ubn,remainer);
     }
+    formatUBN(&ubn);
     return ubn;
 }
 unsignedBigNumber subUBN(unsignedBigNumber *u1,unsignedBigNumber *u2){
@@ -370,8 +380,7 @@ void split(unsignedBigNumber *src,int digitCount,unsignedBigNumber *dst1,unsigne
     formatUBN(dst1);
 }
 int main(){
-    unsignedBigNumber u1=inputUBN(),u2=inputUBN();
-    unsignedBigNumber u3=modUBN(&u1,&u2);
-    printUBN(&u3);
+    unsignedBigNumber u1=inputUBN(),u2,u3;
+    split(&u1,u1.digitCount/2,&u2,&u3);
     return 0;
 }
