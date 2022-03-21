@@ -128,6 +128,29 @@ signedBigNumber getOppositeSBN(signedBigNumber *sbn){
     oppositeSBN.sign = !sbn->sign;
     return oppositeSBN;
 }
+int cmpAbsSBN(signedBigNumber *s1,signedBigNumber *s2){
+    if(s1->digitCount > s2->digitCount){
+        return 1;
+    }
+    else if(s1->digitCount < s2->digitCount){
+        return -1;
+    }
+    else{
+        node* p1=s1->phead->next;
+        node* p2=s2->phead->next;
+        while(p1!=NULL && p2!=NULL){
+            if(p1->digit > p2->digit){
+                return 1;
+            }
+            else if(p1->digit < p2->digit){
+                return -1;
+            }
+            p1 = p1->next;
+            p2 = p2->next;
+        }
+        return 0;
+    }
+}
 int cmpSBN(signedBigNumber *s1,signedBigNumber *s2){
     if(s1->phead->next->digit==0&&s2->phead->next->digit==0){
         return 0;
@@ -136,49 +159,9 @@ int cmpSBN(signedBigNumber *s1,signedBigNumber *s2){
     }else if(s1->sign==MINUS&&s2->sign==PLUS){
         return -1;
     }else if(s1->sign==PLUS){
-        if(s1->digitCount > s2->digitCount){
-            return 1;
-        }
-        else if(s1->digitCount < s2->digitCount){
-            return -1;
-        }
-        else{
-            node* p1=s1->phead->next;
-            node* p2=s2->phead->next;
-            while(p1!=NULL && p2!=NULL){
-                if(p1->digit > p2->digit){
-                    return 1;
-                }
-                else if(p1->digit < p2->digit){
-                return -1;
-                }
-                p1 = p1->next;
-                p2 = p2->next;
-            }
-            return 0;
-        }
+        return cmpAbsSBN(s1,s2);
     }else if(s1->sign==MINUS){
-        if(s1->digitCount > s2->digitCount){
-            return -1;
-        }
-        else if(s1->digitCount < s2->digitCount){
-            return 1;
-        }
-        else{
-            node* p1=s1->phead->next;
-            node* p2=s2->phead->next;
-            while(p1!=NULL && p2!=NULL){
-                if(p1->digit > p2->digit){
-                    return -1;
-                }
-                else if(p1->digit < p2->digit){
-                return 1;
-                }
-                p1 = p1->next;
-                p2 = p2->next;
-            }
-            return 0;
-        }
+        return cmpAbsSBN(s2,s1);
     }
 }
 signedBigNumber addSBN(signedBigNumber *s1,signedBigNumber *s2){
@@ -404,6 +387,29 @@ signedBigNumber KaratsubamulSBN(signedBigNumber *s1,signedBigNumber *s2){
     dropSBN(&Z2PlusZ0);
     return result;
 }
+signedBigNumber divSBN(signedBigNumber *s1,signedBigNumber *s2){
+    signedBigNumber sbn=intToSBN(0);
+    sbn.sign=s1->sign^s2->sign;
+    signedBigNumber temp1,temp2;
+    assign(&temp1,s1);
+    assign(&temp2,s2);
+    temp2.sign=temp1.sign=PLUS;
+    int digit;
+    int remainer = 0;
+    while(cmpAbsSBN(&temp1,&temp2)>=0){
+        digit = 0;
+        while(cmpAbsSBN(&temp1,&temp2)>=0){
+            temp1 = subSBN(&temp1,&temp2);
+            digit++;
+        }
+        appendFrontDigit(&sbn,digit);
+    }
+    shiftLeft(&sbn,-1);
+    formatSBN(&sbn);
+    dropSBN(&temp1);
+    dropSBN(&temp2);
+    return sbn;
+}
 void shiftLeft(signedBigNumber *sbn,int i){
     if(i<0){
         sbn->digitCount+=i;
@@ -455,7 +461,8 @@ int SBNToInt(signedBigNumber *sbn){
     return n;
 }
 int main(){
-    signedBigNumber s1=inputSBN(),s2=inputSBN(),s3=mulSBN(&s1,&s2);
+    signedBigNumber s1=inputSBN(),s2=inputSBN(),s3;
+    s3=divSBN(&s1,&s2);
     printSBN(&s3);
     return 0;
 }

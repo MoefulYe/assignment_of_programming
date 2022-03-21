@@ -44,7 +44,9 @@ signedBigNumber mulSBN(signedBigNumber *s1,signedBigNumber *s2);
 signedBigNumber divSBN(signedBigNumber *s1,signedBigNumber *s2);
 //有符号大数字取模
 signedBigNumber modSBN(signedBigNumber *s1,signedBigNumber *s2);
-//比较两个有符号大数的大小,s1>s2时返回1;s1=s2返回;s1<s2返回-1
+//比较两数绝对值的大小
+int cmpAbsSBN(signedBigNumber *s1,signedBigNumber *s2);
+//比较两个有符号大数的大小,s1>s2时返回1;s1=s2返回0;s1<s2返回-1
 int cmpSBN(signedBigNumber *s1,signedBigNumber *s2);
 //int转有符号大数
 signedBigNumber intToSBN(int n);
