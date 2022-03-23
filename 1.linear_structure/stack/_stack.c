@@ -44,8 +44,8 @@ void pushWithResize(_stack *stack,ElemType e){
 }
 ElemType pop(_stack *stack){
     if(stack->top==-1){
-        printf("panic:the stack is empty!");
-        exit(-2);
+        printf("pop() panic:the stack is empty!");
+        exit(-3);
     }
     ElemType e=stack->bottom[stack->top];
     stack->top--;
@@ -53,7 +53,7 @@ ElemType pop(_stack *stack){
 }
 ElemType get(_stack *stack){
     if(stack->top==-1){
-        printf("panic:the stack is empty!");
+        printf("get() panic:the stack is empty!");
         exit(-3);
     }
     return stack->bottom[stack->top];

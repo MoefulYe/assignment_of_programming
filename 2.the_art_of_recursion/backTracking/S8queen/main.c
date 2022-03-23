@@ -3,7 +3,7 @@
 #define MAX_N 30
 int n,solutionCount=0;
 int colPerRow[MAX_N],MaxTrix[MAX_N][MAX_N]={0};;
-int solutions[800][MAX_N][MAX_N]={0};
+int solutions[2000][MAX_N][MAX_N]={0};
 void init(){
     scanf("%d",&n);
     for(int i=0;i<n;i++){

@@ -387,7 +387,6 @@ signedBigNumber KaratsubamulSBN(signedBigNumber *s1,signedBigNumber *s2){
     dropSBN(&Z2PlusZ0);
     return result;
 }
-<<<<<<< HEAD
 signedBigNumber divSBN(signedBigNumber *s1,signedBigNumber *s2){
     signedBigNumber sbn=intToSBN(0);
     sbn.sign=s1->sign^s2->sign;
@@ -411,30 +410,6 @@ signedBigNumber divSBN(signedBigNumber *s1,signedBigNumber *s2){
     dropSBN(&temp2);
     return sbn;
 }
-=======
-/*
-signedBigNumber divSBN(signedBigNumber *s1,signedBigNumber *s2){
-    signedBigNumber ubn=intToSBN(0);
-    signedBigNumber temp;
-    sign=s1->sign^s2->sign;
-    initSBN(&temp);
-    assign(&temp,s1);
-    int digit;
-    int remainer = 0;
-    while(cmpSBN(&temp,s2)>=0){
-        digit = 0;
-        while(cmpSBN(&temp,s2)>=0){
-            temp = subSBN(&temp,s2);
-            digit++;
-        }
-        appendFrontDigit(&ubn,digit);
-    }
-    shiftLeft(&ubn,-1);
-    formatSBN(&ubn);
-    return ubn;
-}
-*/
->>>>>>> d997903 (s)
 void shiftLeft(signedBigNumber *sbn,int i){
     if(i<0){
         sbn->digitCount+=i;
