@@ -379,8 +379,3 @@ void split(unsignedBigNumber *src,int digitCount,unsignedBigNumber *dst1,unsigne
     formatUBN(dst2);
     formatUBN(dst1);
 }
-int main(){
-    unsignedBigNumber u1=inputUBN(),u2,u3;
-    split(&u1,u1.digitCount/2,&u2,&u3);
-    return 0;
-}

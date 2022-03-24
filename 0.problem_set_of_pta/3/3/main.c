@@ -1,6 +1,78 @@
-#include "./signedBigNumber.h"
-#include<stdio.h>
-#include<stdlib.h>
+/*
+2.3 *在有些应用中，需要解决有符号大数的运算和比较问题，请在样例Ex2.2基础上，实现有符号大数的加、减、乘运算和比较
+，输入两个有符号大数，输出它们的和、差、积。正整数无+号，负整数带-号，零输出0。
+输入格式:
+两个有符号大数。
+输出格式:
+三个有符号大数，每个一行，正号不输出。
+输入样例:
+-1234567890987654321333888999666
+ 147655765659657669789687967867
+输出样例:
+在这里给出相应的输出。例如：
+-1086912125327996651544201031799
+-1382223656647311991123576967533
+-182291067202610882538196767087546887313635167500388981732422
+*/ 
+#include <stdio.h>
+#include <stdlib.h>
+#define MINUS 1
+#define PLUS 0
+//TODO 取绝对值 取相反数
+typedef struct node{
+    int digit;
+    struct node *next,*prev;
+}node;
+typedef struct{
+    int sign;
+    int digitCount;
+    node *phead,*ptail;
+} signedBigNumber;
+//新建一个节点
+node* newNode();
+//初始化一个有符号大数
+void initSBN(signedBigNumber *sbn);
+//打印一个有符号大数
+void printSBN(signedBigNumber* sbn);
+//输入一个有符号大数
+signedBigNumber inputSBN();
+//销毁一个有符号大数
+void dropSBN(signedBigNumber *sbn);
+//在尾部追加一位
+void appendDigit(signedBigNumber* sbn,int digit);
+//在头部追加一位
+void appendFrontDigit(signedBigNumber* sbn,int digit);
+//格式化有符号大数
+void formatSBN(signedBigNumber* sbn);
+//取绝对值
+signedBigNumber absSBN(signedBigNumber *sbn);
+//取相反数
+signedBigNumber getOppositeSBN(signedBigNumber *sbn);
+//有符号大数倍乘一个整形
+signedBigNumber scaleSBN(signedBigNumber *sbn,int scale);
+//两个有符号大数相加
+signedBigNumber addSBN(signedBigNumber *s1,signedBigNumber *s2);
+//两个有符号大数相减
+signedBigNumber subSBN(signedBigNumber *s1,signedBigNumber *s2);
+//两个有符号大数相乘
+signedBigNumber mulSBN(signedBigNumber *s1,signedBigNumber *s2);
+//两个有符号大数相除
+signedBigNumber divSBN(signedBigNumber *s1,signedBigNumber *s2);
+//有符号大数字取模
+signedBigNumber modSBN(signedBigNumber *s1,signedBigNumber *s2);
+//比较两数绝对值的大小
+int cmpAbsSBN(signedBigNumber *s1,signedBigNumber *s2);
+//比较两个有符号大数的大小,s1>s2时返回1;s1=s2返回0;s1<s2返回-1
+int cmpSBN(signedBigNumber *s1,signedBigNumber *s2);
+//int转有符号大数
+signedBigNumber intToSBN(int n);
+//有符号大数转int
+int SBNToInt(signedBigNumber *sbn);
+//把SBN2赋值给空有符号大数SBN1
+void assign(signedBigNumber *s1,signedBigNumber *s2);
+void shiftLeft(signedBigNumber *sbn,int i);
+void split(signedBigNumber* src,int digitCount,signedBigNumber* dst1,signedBigNumber* dst2);
+signedBigNumber KaratsubamulSBN(signedBigNumber *s1,signedBigNumber *s2);
 node* newNode(){
     node* p = (node*)malloc(sizeof(node));
     if(p == NULL){
@@ -24,7 +96,7 @@ signedBigNumber inputSBN(){
     if((ch=getchar())=='-'){
         sbn.sign = MINUS;
     }
-    else if(ch=='+'){
+    else if(ch==' '){
         sbn.sign = PLUS;
     }
     else{
@@ -459,4 +531,11 @@ int SBNToInt(signedBigNumber *sbn){
         return -n;
     }
     return n;
+}
+int main(){
+    signedBigNumber s1=inputSBN(),s2=inputSBN(),s3=addSBN(&s1,&s2),s4=subSBN(&s1,&s2),s5=mulSBN(&s1,&s2),s6=divSBN(&s1,&s2);
+    printSBN(&s3);
+    printSBN(&s4);
+    printSBN(&s5);
+    return 0;
 }
