@@ -32,11 +32,10 @@ void print(){
 }
 //检查可行性,可行返回1
 int check(int row){
-    for(int i=0;i<=row;i++)
-        for(int j=0;j<i;j++){
-            if(colPerRow[i]==colPerRow[j])return 0;
-            if(abs(i-j)==abs(colPerRow[i]-colPerRow[j]))return 0;            
-        }
+    for(int i=0;i<row;i++){
+        if(colPerRow[row]==colPerRow[i])return 0;
+        if(abs(row-i)==abs(colPerRow[row]-colPerRow[i]))return 0;            
+    }
     return 1;
 }
 void try(int row){
