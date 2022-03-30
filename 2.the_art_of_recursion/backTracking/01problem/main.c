@@ -25,7 +25,7 @@ void init(){
     scanf("%d %d",&problem.N,&problem.Cap);//输入物品数量和容量
     problem.left=problem.Cap;
     for(int i=0;i<problem.N;i++){
-        scanf("%d %d",&problem.goods[i].value,&problem.goods[i].value);
+        scanf("%d %d",&problem.goods[i].value,&problem.goods[i].weight);
         problem.goods[i].valuePerWeight=(double)problem.goods[i].value/problem.goods[i].weight;
         problem.currentSolution.isSelected[i]=0;
     }
@@ -54,15 +54,27 @@ void sort(){
     }
 }
 void try(int i){
-    if(i==problem.N-1){
+    if(i==problem.N){
         if(problem.currentSolution.totalValue>problem.bestSolution.totalValue){
             problem.bestSolution=problem.currentSolution;
         }
         return;
     }//case1.已试探所有物品?如果现有解大于最优解?记得回溯
-    for(int i=0;i<problem.N;i++){
-
+    for(int j=0;j<problem.N;j++){
+        if(problem.currentSolution.isSelected[j]==0&&problem.left>=problem.goods[j].weight){
+            problem.currentSolution.isSelected[j]=1;
+            problem.left-=problem.goods[j].weight;
+            problem.currentSolution.totalValue+=problem.goods[j].value;
+            try(j+1);
+            problem.currentSolution.isSelected[j]=0;
+            problem.left+=problem.goods[j].weight;
+            problem.currentSolution.totalValue-=problem.goods[j].value;
+        }
     }
+    if(problem.currentSolution.totalValue>problem.bestSolution.totalValue){
+            problem.bestSolution=problem.currentSolution;
+    }
+    return;
 }
 int main(){
     init();//初始化问题
