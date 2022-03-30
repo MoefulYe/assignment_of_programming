@@ -65,6 +65,15 @@ void try(int i){
             problem.currentSolution.isSelected[j]=1;
             problem.left-=problem.goods[j].weight;
             problem.currentSolution.totalValue+=problem.goods[j].value;
+            if(problem.bestSolution.totalValue-problem.currentSolution.totalValue>=problem.left*problem.goods[j].valuePerWeight){
+                if(problem.currentSolution.totalValue>problem.bestSolution.totalValue){
+                    problem.bestSolution=problem.currentSolution;
+                }
+                problem.currentSolution.isSelected[j]=0;
+                problem.left+=problem.goods[j].weight;
+                problem.currentSolution.totalValue-=problem.goods[j].value;
+                return;
+            }
             try(j+1);
             problem.currentSolution.isSelected[j]=0;
             problem.left+=problem.goods[j].weight;
