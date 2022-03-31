@@ -60,7 +60,7 @@ void try(int i){
         }
         return;
     }//case1.已试探所有物品?如果现有解大于最优解?记得回溯
-    for(int j=0;j<problem.N;j++){
+    for(int j=i;j<problem.N;j++){
         if(problem.currentSolution.isSelected[j]==0&&problem.left>=problem.goods[j].weight){
             problem.currentSolution.isSelected[j]=1;
             problem.left-=problem.goods[j].weight;
